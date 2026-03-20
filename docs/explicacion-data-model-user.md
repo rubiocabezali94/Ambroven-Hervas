@@ -1,4 +1,4 @@
-# ¿Qué hemos construido? — Change `data-model-user` explicado para un junior
+# ¿Qué hemos construido? — Change `data-model-user` explicado 
 
 > Este documento explica, paso a paso y en lenguaje sencillo, todo lo que se implementó en el primer cambio del proyecto: el **modelo de datos de usuario**.
 
