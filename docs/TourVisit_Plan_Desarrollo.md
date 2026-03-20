@@ -133,7 +133,7 @@ services:
 | email | VARCHAR(255) | UNIQUE, NOT NULL |
 | password_hash | VARCHAR | nullable (usuarios OAuth no tienen contraseña local) |
 | name | VARCHAR(100) | NOT NULL |
-| role | ENUM | `tourist` / `operator` / `admin` |
+| role | ENUM | `tourist` / `admin` |
 | firebase_uid | VARCHAR(128) | UNIQUE, nullable |
 | avatar_url | VARCHAR(500) | nullable |
 | preferred_language | VARCHAR(5) | default `'es'` |
@@ -146,7 +146,7 @@ services:
 The system SHALL enforce unique email addresses across all users regardless of registration method.
 
 ### Requirement: Role-based access
-The system SHALL support three roles: tourist, operator, admin with distinct permissions.
+The system SHALL support two roles: tourist, admin with distinct permissions.
 
 #### Scenario: Google OAuth registration
 - GIVEN a user registers via Google OAuth
@@ -340,7 +340,7 @@ The system SHALL only allow users with a booking of status 'completed' to submit
 The system SHALL limit one review per booking (enforced by UNIQUE constraint on booking_id).
 
 ### Requirement: Moderation
-The system SHALL require admin/operator approval before a review is publicly visible.
+The system SHALL require admin approval before a review is publicly visible.
 
 #### Scenario: Ineligible review attempt
 - GIVEN a user has a booking with status = 'confirmed' (not yet completed)
@@ -665,13 +665,7 @@ The system SHALL center the map on the user's geolocation on first load (with ex
 
 ```
 ### Requirement: Admin access restriction
-The system SHALL restrict all /admin routes to users with role = 'admin' or 'operator'.
-
-#### Scenario: Operator permissions
-- GIVEN a user with role = 'operator'
-- WHEN they access /admin/tours
-- THEN they SHALL only see and manage their own tours
-- AND SHALL NOT see tours from other operators
+The system SHALL restrict all /admin routes to users with role = 'admin'.
 
 #### Scenario: Archive tour with active bookings
 - GIVEN a tour has 3 confirmed bookings
@@ -792,7 +786,7 @@ Refresh tokens con expiración 30 días, revocables individualmente en BD
 | GET | `/api/v1/tours` | No |
 | GET | `/api/v1/tours/featured` | No |
 | GET | `/api/v1/tours/:id` | No |
-| POST | `/api/v1/tours` | Sí (operator/admin) |
+| POST | `/api/v1/tours` | Sí (admin) |
 | PATCH | `/api/v1/tours/:id` | Sí (operador propietario / admin) |
 
 **`GET /api/v1/tours` — Query params:**
@@ -919,7 +913,7 @@ const event = stripe.webhooks.constructEvent(
 
 **`/opsx:propose backend-admin`**
 
-**Endpoints (todos requieren role admin u operator):**
+**Endpoints (todos requieren role admin):**
 
 | Método | Ruta | Descripción |
 |---|---|---|

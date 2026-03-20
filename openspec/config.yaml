@@ -1,20 +1,50 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  ## Proyecto: Ambroven
+  Plataforma web de reserva de visitas turísticas.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  ## Stack tecnológico
+  - Frontend: Angular 17+ con SSR, Angular Material, SCSS
+  - Backend: Node.js + Express + TypeScript + TypeORM
+  - Base de datos: PostgreSQL 16
+  - Auth: Firebase Authentication (Google OAuth 2.0) + JWT (RS256, 1h) + refresh token en HttpOnly cookie
+  - Pagos: Stripe Elements (webhooks firmados con STRIPE_WEBHOOK_SECRET)
+  - Mapas: Google Maps JavaScript API (@angular/google-maps)
+  - Calendario: Google Calendar API v3 (OAuth 2.0, scope calendar.events)
+  - Email: SendGrid Dynamic Templates
+  - Despliegue: Firebase Hosting + Cloud Run + Cloud SQL (GCP)
+
+  ## Convenciones
+  - Commits convencionales: feat(scope): descripción
+  - GitFlow: main, develop, feature/*, hotfix/*
+  - Entidades TypeORM con UUIDs como PK
+  - API REST con prefijo /api/v1/
+  - DTOs validados con class-validator + class-transformer
+  - Roles: tourist, admin (RBAC con middleware roleGuard)
+  - Idiomas: ES (base), EN, FR, PT
+
+  ## Metodología SDD (OpenSpec)
+  - Orden de implementación: Modelo de datos → UI Angular (con mocks) → Backend + integraciones
+  - Ningún código se escribe sin spec previa
+  - Specs en formato SHALL + GIVEN/WHEN/THEN
+
+  ## Reglas de seguridad
+  - JWT nunca en localStorage (siempre en memoria)
+  - SELECT FOR UPDATE en operaciones de reserva para evitar race conditions
+  - Webhooks de Stripe verificados con constructEvent()
+  - Rate limiting: 5 req/15min en /auth/login
+
+rules:
+  proposal:
+    - Incluir siempre una sección "Non-goals" con lo que explícitamente NO cubre este change
+    - Referenciar el número de change del plan (ej: Change 1 de 26)
+    - Máximo 400 palabras
+  specs:
+    - Usar formato "The system SHALL..." para requisitos
+    - Usar GIVEN/WHEN/THEN para escenarios
+    - Incluir escenarios de error y edge cases, no solo el happy path
+  tasks:
+    - Cada tarea debe ser completable en menos de 2 horas
+    - Numerar con formato 1.1, 1.2, 2.1, 2.2...
+    - Incluir criterio de verificación al final de cada fase
