@@ -52,7 +52,10 @@
 ### Change 6: `database-setup`
 - [ ] `/opsx:propose` → `/opsx:apply`
 - [ ] `data-source.ts` creado, migración ejecutada, índices creados
-- [ ] Seed ejecutado (3 operadores, 10 tours, 60 slots, 50 turistas, 30 reservas, 20 reseñas, 3 cupones)
+- [ ] Crear `backend/src/seeds/dev.seed.ts` con guard `NODE_ENV !== 'production'`
+- [ ] Añadir script `"seed:dev": "ts-node src/seeds/dev.seed.ts"` en `package.json`
+- [ ] Seed ejecutado correctamente: `npm run seed:dev` sin errores
+- [ ] Verificar en pgAdmin que se han creado: 3 operadores, 10 tours publicados, 5 draft, 60 slots, 50 turistas, 30 reservas, 20 reseñas, 3 cupones
 - [ ] `/opsx:archive`
 
 ---

@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { User } from './entities/User';
+import { Tour } from './entities/Tour';
+import { Waypoint } from './entities/Waypoint';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -11,7 +13,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD ?? 'change_me',
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
-  entities: [User],
+  entities: [User, Tour, Waypoint],
   migrations: ['src/migrations/*.ts'],
   subscribers: [],
 });

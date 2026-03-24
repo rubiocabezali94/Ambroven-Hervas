@@ -365,6 +365,33 @@ The system SHALL require admin approval before a review is publicly visible.
   - `idx_review_tour_status` en `Review(tour_id, status)`
   - **tsvector index** en `Tour` para full-text search
 - **Seed de datos de desarrollo:**
+
+  **Implementación:** script TypeScript en `backend/src/seeds/dev.seed.ts`, ejecutado con el comando `npm run seed:dev`. Solo disponible en entorno de desarrollo (guard `NODE_ENV !== 'production'`).
+
+  **Script npm a añadir en `package.json`:**
+  ```json
+  "seed:dev": "ts-node src/seeds/dev.seed.ts"
+  ```
+
+  **Estructura del script:**
+  ```typescript
+  // backend/src/seeds/dev.seed.ts
+  import 'reflect-metadata';
+  import { AppDataSource } from '../data-source';
+  // importar entidades...
+
+  async function seed() {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('Seed no permitido en producción');
+    }
+    await AppDataSource.initialize();
+    // limpiar y repoblar cada entidad en orden de dependencias
+    await AppDataSource.destroy();
+  }
+  seed().catch(err => { console.error(err); process.exit(1); });
+  ```
+
+  **Datos a generar (en orden de dependencias):**
   - 3 usuarios operadores
   - 10 tours publicados (variedad de categorías, idiomas, precios)
   - 5 tours en estado draft
