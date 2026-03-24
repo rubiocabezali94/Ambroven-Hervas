@@ -1,7 +1,7 @@
 # TourVisit — Checklist de Progreso
 
 > Actualizar al completar cada paso. Fuente de verdad del estado del proyecto.
-> Última actualización: 20 de marzo de 2026
+> Última actualización: 24 de marzo de 2026
 
 ---
 
@@ -17,17 +17,17 @@
 - [x] `README.md` en raíz
 - [x] Estructura de carpetas completa
 - [x] `.github/` con skills y prompts de Copilot
-- [ ] `docker compose up -d` → postgres en estado `healthy`
-- [ ] Primer commit: `chore: initial project setup`
+- [x] `docker compose up -d` → postgres en estado `healthy`
+- [x] Primer commit: `chore: initial project setup`
 
 ---
 
 ## BLOQUE 1 — Modelo de Datos
 
-### Change 1: `data-model-user`
-- [ ] `/opsx:propose` ejecutado y spec revisada (firebase_uid, roles, 409 duplicate)
-- [ ] `/opsx:apply` → entidad `User` en `backend/src/entities/`
-- [ ] `/opsx:archive`
+### Change 1: `data-model-user` ✅
+- [x] `/opsx:propose` ejecutado y spec revisada (firebase_uid, roles tourist/admin, 409 duplicate)
+- [x] `/opsx:apply` → `User.ts`, `enums.ts`, migración `CreateUserTable`, `update-profile.dto.ts`, modelos frontend
+- [ ] `/opsx:archive` ← **SIGUIENTE PASO**
 
 ### Change 2: `data-model-tour`
 - [ ] `/opsx:propose` → spec revisada (status enum, imágenes mínimas, waypoints)
@@ -146,8 +146,8 @@
 
 | Bloque | Changes | Estado |
 |---|---|---|
-| BLOQUE 0 — Setup | pre-condición | 🟡 10/12 pasos |
-| BLOQUE 1 — Modelo de datos | 1–6 | ❌ Pendiente |
+| BLOQUE 0 — Setup | pre-condición | ✅ Completo |
+| BLOQUE 1 — Modelo de datos | 1–6 | 🟡 1/6 en curso (Change 1 pendiente archive) |
 | BLOQUE 2 — UI Angular | 7–15 | ❌ Pendiente |
 | BLOQUE 3 — Backend | 16–24 | ❌ Pendiente |
 | BLOQUE 4 — QA y Deploy | 25–26 | ❌ Pendiente |
