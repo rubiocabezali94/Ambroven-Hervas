@@ -1,4 +1,4 @@
-# TourVisit — Plan de Desarrollo Detallado
+# Ambroven Hervás — Plan de Desarrollo Detallado
 
 **Versión:** 1.0 | **Fecha:** 20 de marzo de 2026 | **Metodología:** OpenSpec (Spec Driven Development)
 
@@ -95,8 +95,8 @@ services:
     image: postgres:16
     ports: ["5432:5432"]
     environment:
-      POSTGRES_DB: tourvisit_dev
-      POSTGRES_USER: tourvisit
+      POSTGRES_DB: Ambroven Hervás_dev
+      POSTGRES_USER: Ambroven Hervás
       POSTGRES_PASSWORD: (en .env)
   pgadmin:
     image: dpage/pgadmin4
@@ -904,7 +904,7 @@ const event = stripe.webhooks.constructEvent(
 
 **Factura PDF:**
 - Generada con `pdfkit` al confirmar el pago
-- Incluye: logo TourVisit, datos del tour, fecha, participantes, desglose de precio, número de reserva
+- Incluye: logo Ambroven Hervás, datos del tour, fecha, participantes, desglose de precio, número de reserva
 - Enviada por email adjunta con SendGrid
 
 ---
