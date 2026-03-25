@@ -10,9 +10,9 @@
 
 ## 2. Migración
 
-- [ ] 2.1 Generar la migración: `npm run migration:generate -- src/migrations/CreateTourTable`
-- [ ] 2.2 Revisar el SQL generado: debe incluir `CREATE TYPE tour_category_enum`, `CREATE TYPE tour_status_enum`, `CREATE TABLE tours` con FK a `users`, `CREATE TABLE waypoints` con FK a `tours` ON DELETE CASCADE
-- [ ] 2.3 Añadir manualmente al final del método `up()` de la migración el bloque SQL para la columna generada y su índice GIN:
+- [x] 2.1 Generar la migración: `npm run migration:generate -- src/migrations/CreateTourTable`
+- [x] 2.2 Revisar el SQL generado: debe incluir `CREATE TYPE tour_category_enum`, `CREATE TYPE tour_status_enum`, `CREATE TABLE tours` con FK a `users`, `CREATE TABLE waypoints` con FK a `tours` ON DELETE CASCADE
+- [x] 2.3 Añadir manualmente al final del método `up()` de la migración el bloque SQL para la columna generada y su índice GIN:
   ```sql
   ALTER TABLE tours ADD COLUMN search_vector tsvector
     GENERATED ALWAYS AS (
@@ -22,13 +22,13 @@
   CREATE INDEX idx_tours_search_vector ON tours USING GIN(search_vector);
   CREATE INDEX idx_tours_status_category ON tours(status, category);
   ```
-- [ ] 2.4 Añadir en el método `down()` el DROP correspondiente:
+- [x] 2.4 Añadir en el método `down()` el DROP correspondiente:
   ```sql
   DROP INDEX IF EXISTS idx_tours_search_vector;
   DROP INDEX IF EXISTS idx_tours_status_category;
   ALTER TABLE tours DROP COLUMN IF EXISTS search_vector;
   ```
-- [ ] 2.5 Ejecutar la migración: `npm run migration:run`
+- [x] 2.5 Ejecutar la migración: `npm run migration:run`
 
 **Verificación**: Las tablas `tours` y `waypoints` aparecen en pgAdmin (`http://localhost:5050`) con todos los campos, índices y FK correctos. La columna `search_vector` está presente.
 
