@@ -12,6 +12,7 @@ import { TourCategory, TourStatus } from './enums';
 import { User } from './User';
 import { Waypoint } from './Waypoint';
 import { TourSlot } from './TourSlot';
+import { Booking } from './Booking';
 
 @Entity('tours')
 export class Tour {
@@ -69,6 +70,9 @@ export class Tour {
 
   @OneToMany(() => TourSlot, (slot) => slot.tour)
   slots!: TourSlot[];
+
+  @OneToMany(() => Booking, (booking) => booking.tour)
+  bookings!: Booking[];
 
   @CreateDateColumn()
   created_at!: Date;

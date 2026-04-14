@@ -3,11 +3,13 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Tour } from './Tour';
+import { Booking } from './Booking';
 
 @Entity('tour_slots')
 export class TourSlot {
@@ -41,4 +43,7 @@ export class TourSlot {
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at!: Date;
+
+  @OneToMany(() => Booking, (booking) => booking.slot)
+  bookings!: Booking[];
 }

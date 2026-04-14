@@ -16,3 +16,11 @@ export enum TourStatus {
   PUBLISHED = 'published',
   ARCHIVED = 'archived',
 }
+
+export enum BookingStatus {
+  PENDING_PAYMENT = 'pending_payment',
+  CONFIRMED = 'confirmed',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+  REFUNDED = 'refunded',
+}

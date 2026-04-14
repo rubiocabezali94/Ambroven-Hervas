@@ -40,9 +40,9 @@
 - [x] `/opsx:archive` → `openspec/changes/archive/2026-04-14-data-model-tour-slot/`
 
 ### Change 4: `data-model-booking`
-- [ ] `/opsx:propose` → spec revisada (pago completo al reservar, política de reembolso 100% / 75% según plazo de cancelación de 7 días)
-- [ ] `/opsx:apply` → entidad `Booking` con `num_persons`, `total_amount`, `cancellation_deadline`, `stripe_payment_intent_id`, `BookingStatus` enum
-- [ ] `/opsx:archive`
+- [x] `/opsx:propose` → spec revisada (pago completo al reservar, política de reembolso 100% / 75% según plazo de cancelación de 7 días)
+- [x] `/opsx:apply` → entidad `Booking` con `num_persons`, `total_amount`, `cancellation_deadline`, `stripe_payment_intent_id`, `BookingStatus` enum
+- [x] `/opsx:archive` → `openspec/changes/archive/2026-04-14-data-model-booking/`
 
 ### Change 5: `data-model-review`
 - [ ] `/opsx:propose` → spec revisada (booking completed, 1 reseña/booking, moderación)

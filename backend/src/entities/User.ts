@@ -3,10 +3,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Index,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from './enums';
+import { Booking } from './Booking';
 
 @Entity('users')
 export class User {
@@ -41,4 +43,7 @@ export class User {
 
   @UpdateDateColumn()
   updated_at!: Date;
+
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings!: Booking[];
 }
