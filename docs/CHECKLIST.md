@@ -34,14 +34,14 @@
 - [x] `/opsx:apply` → `Tour.ts`, `Waypoint.ts`, enums, migración `CreateTourTable` (con tsvector GIN), DTOs, modelos frontend
 - [x] `/opsx:archive` → `openspec/changes/archive/2026-03-25-data-model-tour/`
 
-### Change 3: `data-model-tour-slot`
-- [ ] `/opsx:propose` → spec revisada (SELECT FOR UPDATE, spots >= 0)
-- [ ] `/opsx:apply` → entidad `TourSlot`
-- [ ] `/opsx:archive`
+### Change 3: `data-model-tour-slot` ✅
+- [x] `/opsx:propose` → spec revisada (SELECT FOR UPDATE, spots >= 0)
+- [x] `/opsx:apply` → entidad `TourSlot`
+- [x] `/opsx:archive` → `openspec/changes/archive/2026-04-14-data-model-tour-slot/`
 
 ### Change 4: `data-model-booking`
-- [ ] `/opsx:propose` → spec revisada (transacción atómica, timeout 30min, cupones)
-- [ ] `/opsx:apply` → entidades `Booking` y `Coupon`
+- [ ] `/opsx:propose` → spec revisada (pago completo al reservar, política de reembolso 100% / 75% según plazo de cancelación de 7 días)
+- [ ] `/opsx:apply` → entidad `Booking` con `num_persons`, `total_amount`, `cancellation_deadline`, `stripe_payment_intent_id`, `BookingStatus` enum
 - [ ] `/opsx:archive`
 
 ### Change 5: `data-model-review`
@@ -55,7 +55,7 @@
 - [ ] Crear `backend/src/seeds/dev.seed.ts` con guard `NODE_ENV !== 'production'`
 - [ ] Añadir script `"seed:dev": "ts-node src/seeds/dev.seed.ts"` en `package.json`
 - [ ] Seed ejecutado correctamente: `npm run seed:dev` sin errores
-- [ ] Verificar en pgAdmin que se han creado: 3 operadores, 10 tours publicados, 5 draft, 60 slots, 50 turistas, 30 reservas, 20 reseñas, 3 cupones
+- [ ] Verificar en pgAdmin que se han creado: 3 operadores, 10 tours publicados, 5 draft, 60 slots, 50 turistas, 30 reservas, 20 reseñas
 - [ ] `/opsx:archive`
 
 ---
@@ -119,7 +119,7 @@
 
 ### Change 21: `integration-stripe`
 - [ ] `/opsx:propose` → `/opsx:apply` → `/opsx:archive`
-- [ ] Webhook firmado, reembolsos, factura PDF
+- [ ] Webhook firmado, reembolso total (> 7 días) o parcial 75% (≤ 7 días), factura PDF
 
 ### Change 22: `backend-admin`
 - [ ] `/opsx:propose` → `/opsx:apply` → `/opsx:archive`

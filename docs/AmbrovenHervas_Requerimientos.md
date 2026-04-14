@@ -172,12 +172,16 @@ objetivo:
   **RF-14**   Notificaciones push y           **Baja**        1.1           **Pendiente**
               recordatorios                                                 
 
-  **RF-15**   Sistema de descuentos y cupones **Baja**        1.1           **Pendiente**
+  **RF-15**   ~~Sistema de descuentos y cupones~~ **Baja**   1.1           **Descartado**
 
   **RF-16**   Multi-idioma (ES / EN)          **Media**       1.1           **Pendiente**
 
   **RF-17**   Informes y estadísticas para    **Media**       1.2           **Pendiente**
               admin                                                         
+
+  **RF-18**   Política de cancelación con     **Alta**        1.0           **Pendiente**
+              reembolso según plazo (100% >                                 
+              7 días / 75% ≤ 7 días)                                        
   ----------- ------------------------------- --------------- ------------- ---------------
 
 **4. Descripción Detallada de Módulos**
@@ -236,11 +240,15 @@ automáticamente en su calendario personal.
 
 -   Formulario de pago seguro con Stripe Elements
 
+-   Pago del importe total en el momento de la reserva (sin pago aplazado ni depósitos)
+
 -   Soporte para tarjetas de crédito/débito y Apple Pay / Google Pay
 
 -   Generación automática de factura en PDF por email
 
--   Sistema de reembolso parcial o total en caso de cancelación
+-   Política de cancelación y reembolso:
+    -   Cancelación con **más de 7 días** de antelación: reembolso del **100%** del importe
+    -   Cancelación con **7 días o menos**: reembolso del **75%** (retención del 25% como penalización)
 
 -   Gestión de divisas y precios en EUR por defecto
 

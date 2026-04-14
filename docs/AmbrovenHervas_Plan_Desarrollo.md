@@ -272,43 +272,54 @@ The system SHALL prevent available_spots from going below 0.
 |---|---|---|
 | id | UUID | PK |
 | user_id | UUID | FK → User(id) |
-| tour_id | UUID | FK → Tour(id) |
+| tour_id | UUID | FK → Tour(id) (desnormalizado) |
 | slot_id | UUID | FK → TourSlot(id) |
-| status | ENUM | `pending_payment` / `confirmed` / `cancelled` / `refunded` / `completed` |
-| participants | INT | NOT NULL, min: 1 |
-| total_price | DECIMAL(10,2) | NOT NULL |
-| coupon_id | UUID | FK → Coupon(id), nullable |
-| discount_amount | DECIMAL(10,2) | default 0 |
-| stripe_payment_intent_id | VARCHAR(100) | nullable |
+| status | ENUM | `pending_payment` / `confirmed` / `completed` / `cancelled` / `refunded` |
+| num_persons | INT | NOT NULL, min: 1 |
+| total_amount | DECIMAL(10,2) | NOT NULL (congelado al reservar: num_persons × tour.price_per_person) |
+| cancellation_deadline | TIMESTAMPTZ | NOT NULL (slot.start_datetime − 7 days, precalculado) |
+| stripe_payment_intent_id | VARCHAR(200) | nullable |
 | stripe_payment_status | VARCHAR(50) | nullable |
 | google_calendar_event_id | VARCHAR(200) | nullable |
-| cancellation_reason | TEXT | nullable |
-| cancelled_at | TIMESTAMP | nullable |
-| created_at | TIMESTAMP | auto |
-| updated_at | TIMESTAMP | auto |
+| cancelled_at | TIMESTAMPTZ | nullable |
+| created_at | TIMESTAMPTZ | auto |
+| updated_at | TIMESTAMPTZ | auto |
 
-**Entidad `Coupon`**
-
-| Campo | Tipo | Restricciones |
-|---|---|---|
-| id | UUID | PK |
-| code | VARCHAR(50) | UNIQUE, NOT NULL |
-| discount_percent | INT | NOT NULL, entre 1 y 100 |
-| valid_until | TIMESTAMP | NOT NULL |
-| max_uses | INT | NOT NULL |
-| use_count | INT | default 0 |
-| active | BOOLEAN | default true |
+**Política de cancelación y reembolso:**
+- Cancelación con **más de 7 días** de antelación → reembolso del **100%**
+- Cancelación con **7 días o menos** → reembolso del **75%** (retención del 25% como penalización)
 
 **Specs clave:**
 ```
 ### Requirement: Booking atomicity
 The system SHALL create a booking and decrement available_spots in a single database transaction.
 
+### Requirement: Payment — full amount upfront
+The system SHALL charge the full total_amount at booking time via Stripe Elements.
+No deferred or partial payment at booking time is supported.
+
+### Requirement: Cancellation policy
+The system SHALL refund 100% of total_amount when cancelled_at <= cancellation_deadline.
+The system SHALL refund 75% of total_amount (retaining 25%) when cancelled_at > cancellation_deadline.
+
 #### Scenario: Payment timeout
 - GIVEN a booking is created with status = 'pending_payment'
 - WHEN 30 minutes pass without payment confirmation
 - THEN the system SHALL cancel the booking
 - AND SHALL restore the available_spots in the TourSlot
+
+#### Scenario: Cancellation within deadline
+- GIVEN a booking with status = 'confirmed' and cancelled_at <= cancellation_deadline
+- WHEN the tourist or admin cancels the booking
+- THEN the system SHALL initiate a full refund via Stripe
+- AND status SHALL transition to 'refunded'
+
+#### Scenario: Cancellation outside deadline
+- GIVEN a booking with status = 'confirmed' and cancelled_at > cancellation_deadline
+- WHEN the tourist or admin cancels the booking
+- THEN the system SHALL initiate a partial refund of 75% of total_amount
+- AND the remaining 25% SHALL be retained as a penalty
+- AND status SHALL transition to 'refunded'
 ```
 
 ---
@@ -399,7 +410,6 @@ The system SHALL require admin approval before a review is publicly visible.
   - 50 usuarios turistas
   - 30 reservas con distintos estados
   - 20 reseñas (15 aprobadas, 5 pendientes)
-  - 3 cupones de descuento
 
 ---
 
@@ -433,7 +443,6 @@ frontend/src/app/
       booking.model.ts
       user.model.ts
       review.model.ts
-      coupon.model.ts
     services/        → servicios singleton
     guards/
       auth.guard.ts
@@ -585,8 +594,6 @@ The system SHALL redirect the user to the originally requested URL after success
 2. `ParticipantSelectorComponent`
    - Selector numérico de participantes
    - Precio total calculado en tiempo real: `participants × price_per_person`
-   - Campo de cupón de descuento con validación asíncrona
-   - Resumen del precio antes y después del descuento
 
 3. `PaymentFormComponent`
    - Stripe Elements: número de tarjeta, expiración, CVC
@@ -611,11 +618,6 @@ The system SHALL show a confirmation dialog if the user attempts to leave the pa
 - WHEN the participant selector renders
 - THEN the maximum selectable value SHALL be 3
 
-#### Scenario: Invalid coupon
-- GIVEN a user enters an expired coupon code
-- WHEN the coupon is validated
-- THEN an error message "Coupon expired" SHALL appear inline
-- AND the discount SHALL NOT be applied
 ```
 
 ---
@@ -1159,7 +1161,7 @@ CMD ["node", "dist/server.js"]
 | RF-12 | Panel de administración | #14, #22 |
 | RF-13 | Gestión de guías turísticos | #14, #22 |
 | RF-14 | Notificaciones y recordatorios | #23 |
-| RF-15 | Sistema de descuentos y cupones | #4, #11, #19 |
+| RF-15 | ~~Sistema de descuentos y cupones~~ *(descartado)* | — |
 | RF-16 | Multi-idioma ES/EN/FR | #24 |
 | RF-17 | Informes y estadísticas admin | #22 |
 
