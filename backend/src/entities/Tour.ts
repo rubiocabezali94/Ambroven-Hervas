@@ -11,6 +11,7 @@ import {
 import { TourCategory, TourStatus } from './enums';
 import { User } from './User';
 import { Waypoint } from './Waypoint';
+import { TourSlot } from './TourSlot';
 
 @Entity('tours')
 export class Tour {
@@ -65,6 +66,9 @@ export class Tour {
 
   @OneToMany(() => Waypoint, (waypoint) => waypoint.tour, { cascade: true })
   waypoints!: Waypoint[];
+
+  @OneToMany(() => TourSlot, (slot) => slot.tour)
+  slots!: TourSlot[];
 
   @CreateDateColumn()
   created_at!: Date;

@@ -1,7 +1,7 @@
 # TourVisit — Checklist de Progreso
 
 > Actualizar al completar cada paso. Fuente de verdad del estado del proyecto.
-> Última actualización: 24 de marzo de 2026
+> Última actualización: 14 de abril de 2026
 
 ---
 
@@ -27,12 +27,12 @@
 ### Change 1: `data-model-user` ✅
 - [x] `/opsx:propose` ejecutado y spec revisada (firebase_uid, roles tourist/admin, 409 duplicate)
 - [x] `/opsx:apply` → `User.ts`, `enums.ts`, migración `CreateUserTable`, `update-profile.dto.ts`, modelos frontend
-- [ ] `/opsx:archive` ← **SIGUIENTE PASO**
+- [x] `/opsx:archive` → `openspec/changes/archive/2026-03-24-data-model-user/`
 
-### Change 2: `data-model-tour`
-- [ ] `/opsx:propose` → spec revisada (status enum, imágenes mínimas, waypoints)
-- [ ] `/opsx:apply` → entidades `Tour` y `Waypoint`
-- [ ] `/opsx:archive`
+### Change 2: `data-model-tour` ✅
+- [x] `/opsx:propose` → spec revisada (status enum, imágenes mínimas, waypoints, 1 waypoint mínimo)
+- [x] `/opsx:apply` → `Tour.ts`, `Waypoint.ts`, enums, migración `CreateTourTable` (con tsvector GIN), DTOs, modelos frontend
+- [x] `/opsx:archive` → `openspec/changes/archive/2026-03-25-data-model-tour/`
 
 ### Change 3: `data-model-tour-slot`
 - [ ] `/opsx:propose` → spec revisada (SELECT FOR UPDATE, spots >= 0)
